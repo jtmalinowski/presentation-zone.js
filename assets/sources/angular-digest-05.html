@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/angular@1.5.8/angular.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.6.26/dist/zone.js"></script>
+    <script>
+      angular.module('app', []).controller('controller', function ($scope) {
+        $scope.name = 'loading';
+
+        Zone.current.fork({
+          onInvokeTask: (a, b, c, d, e, f) => {
+            // actual task is called here
+            let result = a.invokeTask(c, d, e, f);
+
+            // then we scan for changes
+            $scope.$apply();
+            return result;
+          }
+        }).run(() => {
+          // mount async hooks
+          fetch('whoami.json').then(response => {
+            response.json().then(body => {
+              $scope.name = body.data.name;
+            });
+          });
+          // unmount async hooks
+        });
+      });
+    </script>
+  </head>
+  <body ng-app="app" ng-controller="controller">
+    Hello: {{ name }}
+  </body>
+</html>
+
+<!-- 4 / 6 -->

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      const originalPromise = Promise;
+      let hookActive = true;
+
+      document._createElement = document.createElement;
+      document.createElement = (...args) => {
+        const type = args[0];
+        const element = document._createElement(...args);
+
+        if (type == 'script' && hookActive) {
+          // sneaky !!
+          setTimeout(() => {
+            let onload = element.onload;
+            element.onload = (...args) => {
+              (onload || (() => {})).call(element, ...args);
+
+              if (originalPromise != Promise) {
+                // Bing Maps horror is loaded, let's remove ourselves
+                hookActive = false;
+
+                // and load zone.js
+                const script = document.createElement('script');
+                script.src = "https://unpkg.com/zone.js@0.6.23?main=browser";
+                document.head.appendChild(script);
+              }
+            };
+          }, 0);
+        }
+
+        return element;
+      };
+    </script>
+    <script src="https://www.bing.com/api/maps/mapcontrol"></script>
+  </head>
+  <body>
+  </body>
+</html>

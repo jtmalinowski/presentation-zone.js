@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.6.26/dist/zone.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.6.26/dist/task-tracking.js"></script>
+    <script>
+      const taskTracker = new (Zone['TaskTrackingZoneSpec']);
+      const myZone = Zone.current.fork(taskTracker);
+
+      myZone.run(() => {
+        // fire some tasks
+        setTimeout(() => {}, 100);
+        setTimeout(() => {}, 200);
+        setTimeout(() => {}, 300);
+        setTimeout(() => {}, 400);
+        setTimeout(() => {}, 500);
+      });
+
+      const reportOutstandingTasks = () => {
+        if (taskTracker.macroTasks.length > 0) {
+          console.log('In progress!');
+        } else {
+          console.log('Done!');
+        }
+      };
+      setTimeout(reportOutstandingTasks, 50);
+      setTimeout(reportOutstandingTasks, 150);
+      setTimeout(reportOutstandingTasks, 250);
+      setTimeout(reportOutstandingTasks, 350);
+      setTimeout(reportOutstandingTasks, 450);
+      setTimeout(reportOutstandingTasks, 550);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

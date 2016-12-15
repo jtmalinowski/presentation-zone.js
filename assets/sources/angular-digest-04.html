@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/angular@1.5.8/angular.js"></script>
+    <script>
+      angular.module('app', []).controller('controller', function ($scope) {
+        $scope.name = 'loading';
+
+        function patchPromise() {
+          let originalThen = Promise.prototype.then;
+          Promise.prototype.then = function (fn) {
+            return originalThen.call(this, (...args) => {
+              patchPromise();
+
+              let result = fn(...args);
+              $scope.$apply();
+              return result;
+
+              unpatchPromise();
+            });
+          };
+
+          Promise.prototype.catch = ...
+          Promise.prototype.finally = ...
+        }
+
+        function unpatchPromise() {
+          Promise.prototype.then = originalThen;
+          Promise.prototype.catch = originalCatch;
+          Promise.prototype.finally = originalFinally;
+        }
+
+        patchPromise();
+        fetch('whoami.json').then(response => {
+          response.json().then(body => {
+            $scope.name = body.data.name;
+          });
+        });
+        unpatchPromise();
+      });
+    </script>
+  </head>
+  <body ng-app="app" ng-controller="controller">
+    Hello: {{ name }}
+  </body>
+</html>
+
+<!-- 4 / 6 -->

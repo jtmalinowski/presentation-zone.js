@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/angular@1.5.8/angular.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.6.26/dist/zone.js"></script>
+    <script>
+      let myZone = Zone.current.fork({
+        onInvokeTask: (a, b, c, d, e, f) => {
+          // copy the arguments
+          let result = a.invokeTask(c, d, e, f);
+          let scope = angular.element(document.body).scope();
+          if (scope) scope.$apply();
+          return result;
+        }
+      });
+
+      let controller = function ($scope) {
+        $scope.name = 'loading';
+
+        fetch('whoami.json').then(response => {
+          $scope.name = response.json().then(body => {
+            $scope.name = body.data.name;
+          });
+        });
+      };
+
+      angular.module('app', []).controller('controller', function ($scope) {
+        return myZone.wrap(controller)($scope);
+      });
+    </script>
+  </head>
+  <body ng-app="app" ng-controller="controller">
+    Hello: {{ name }}
+  </body>
+</html>

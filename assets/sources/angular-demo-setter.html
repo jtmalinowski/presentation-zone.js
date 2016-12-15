@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/angular@1.5.8/angular.js"></script>
+    <script>
+      angular.module('app', []).controller('controller', function ($scope) {
+        $scope.value = 'hello';
+        Object.defineProperty($scope, "value", {
+          set: () => { $scope.$apply(); //refresh the view }
+        });
+
+        $scope.doSth = function (e) {
+          $scope.value = 'changed';
+          e.preventDefault();
+        };
+      });
+    </script>
+  </head>
+  <body ng-app="app" ng-controller="controller">
+    <a href="" ng-click="doSth($event)">{{ value }}</a>
+  </body>
+</html>
+
+<!-- 2 / 4 -->

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.6.26/dist/zone.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.6.26/dist/long-stack-trace-zone.js"></script>
+    <script>
+      const notifierSpec = {
+        onHandleError: (_, __, ___, error) => {
+          // notify mothership about problems
+          console.log(error.stack);
+        }
+      };
+
+      const myZone = Zone.current.fork(notifierSpec).fork(Zone['longStackTraceZoneSpec']);
+
+      window.onload = myZone.wrap(() => {
+        const link = document.querySelectorAll('[request-action]')[0];
+        link.addEventListener('click', handleActionRequest);
+      });
+
+      const handleActionRequest = () => {
+        const actionLink = document.querySelectorAll('[do-action]')[0];
+        actionLink.style.display = 'inline';
+        actionLink.addEventListener('click', doAction);
+      };
+
+      const doAction = () => {
+        throw new Error('Fail!');
+      };
+    </script>
+  </head>
+  <body>
+    <a href="#" request-action>Request</a>
+    <a href="#" do-action style="display: none;">Action</a>
+  </body>
+</html>
