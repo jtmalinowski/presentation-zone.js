@@ -6,7 +6,7 @@
       angular.module('app', []).controller('controller', function ($scope) {
         $scope.value = 'hello';
         Object.defineProperty($scope, "value", {
-          set: () => { $scope.$apply(); //refresh the view }
+          set: () => { $scope.$apply(); /* refresh the view */ }
         });
 
         $scope.doSth = function (e) {

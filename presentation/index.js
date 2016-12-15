@@ -56,7 +56,7 @@ export default class Presentation extends React.Component {
   render() {
     return (
       <Spectacle theme={theme}>
-        <Deck transition={["zoom", "slide"]} transitionDuration={500}>
+        <Deck transition={["zoom", "slide"]} transitionDuration={500} progress="bar">
           <Slide transition={["slide"]} bgColor="primary">
             <Heading size={1} fit caps lineHeight={1} textColor="#F6A623">
               Deep dive
@@ -85,6 +85,15 @@ export default class Presentation extends React.Component {
           </Slide>
 
           <Slide transition={["fade"]} textColor="#F6A623">
+            <Heading caps lineHeight={1} textColor="#F6A623" style={{fontSize: '70px'}}>
+              jQuery without jQuery
+            </Heading>
+            <Heading caps lineHeight={1} textColor="#F6A623" style={{fontSize: '70px'}}>
+              Angular without Angular
+            </Heading>
+          </Slide>
+
+          <Slide transition={["fade"]} textColor="#F6A623">
             <Heading size={1} caps lineHeight={1} textColor="#F6A623">
               Problem
             </Heading>
@@ -102,10 +111,10 @@ export default class Presentation extends React.Component {
             code={require("raw!../assets/sources/angular-demo.html")}
             textSize="15px"
             ranges={[
-              { loc: [0, 17], title: "Angular.js", note: "Angular.js creators always had interesting ideas" },
+              { loc: [0, 17], title: "AngularJS", note: "AngularJS creators always had interesting ideas" },
               { loc: [3, 5] },
               { loc: [15, 16], note: "doSth($event) ???" },
-              { loc: [7, 11], note: "How do I know $scope changed and refresh needed?" },
+              { loc: [7, 11], note: "How do I know $scope changed and refresh is needed?" },
             ]}/>
 
           <CodeSlide
@@ -221,10 +230,10 @@ export default class Presentation extends React.Component {
 
           <Slide transition={["zoom"]} bgColor="primary">
             <Heading size={1} fit caps lineHeight={1} textColor="bright">
-              Congratulations for
+              Asynchronous
             </Heading>
             <Heading size={1} fit caps lineHeight={1} textColor="bright">
-              getting this far
+              error handling
             </Heading>
           </Slide>
 
@@ -351,6 +360,7 @@ export default class Presentation extends React.Component {
             textSize="15px"
             ranges={[
               { loc: [6, 12], note: 'Again, with Zone.js, much simpler' },
+              { loc: [18, 26], note: 'Either check every now and then or use a hook' },
             ]}/>
 
           <CodeSlide
@@ -371,7 +381,7 @@ export default class Presentation extends React.Component {
             textSize="15px"
             ranges={[
               { loc: [5, 10], note: 'Zone.js must be the master of promises' },
-              { loc: [3, 4], note: 'But bing maps also think they are master of promises' },
+              { loc: [3, 5], note: 'But bing maps also think they are master of promises' },
             ]}/>
 
           <CodeSlide
@@ -386,6 +396,28 @@ export default class Presentation extends React.Component {
               { loc: [19, 22], note: 'Promise is overwritten so Bing maps are loaded' },
               { loc: [23, 27], note: 'Safe to load Zone.js now' },
             ]}/>
+
+          <CodeSlide
+            transition={["slide"]}
+            lang="javascript"
+            code={require("raw!../assets/sources/usage-03c.html")}
+            textSize="15px"
+            ranges={[
+              { loc: [4, 13], note: 'Using setter, track when Primise is getting overwritten by Bing' },
+              { loc: [14, 23], note: "Overwrite with Zone's Promise" },
+            ]}/>
+
+          <Slide transition={["zoom"]} bgColor="primary">
+            <Heading size={1} fit caps lineHeight={1} textColor="bright">
+              Track changes in a model
+            </Heading>
+            <Heading size={1} fit caps lineHeight={1} textColor="bright">
+              Track oustanding tasks
+            </Heading>
+            <Heading size={1} fit caps lineHeight={1} textColor="bright">
+              Track execution flow
+            </Heading>
+          </Slide>
 
           <Slide transition={["zoom"]} bgColor="primary">
             <Heading size={1} fit caps lineHeight={1} textColor="bright">

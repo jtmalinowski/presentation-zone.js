@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      Object.defineProperty(window, 'Promise', {
+        set: function (value) {
+          this._Promise = value;
+          overWriteWithZone();
+        },
+        get: function () {
+          return this._Promise;
+        },
+      });
+
+      let isZoneMainPromise = false;
+      function overWriteWithZone() {
+        if (isZoneMainPromise) return;
+        isZoneMainPromise = true;
+
+        const script = document.createElement('script');
+        script.src = "https://unpkg.com/zone.js@0.6.23?main=browser";
+        document.head.appendChild(script);
+      }
+    </script>
+    <script src="https://www.bing.com/api/maps/mapcontrol"></script>
+  </head>
+  <body>
+  </body>
+</html>
